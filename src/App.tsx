@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import loadable from '@loadable/component';
 
-import Home from './pages/Home';
-import News from './pages/News';
-import Header from './components/Header';
-import Footer from './components/Footer';
+const Header = loadable(() => import('./components/Header'));
+const Footer = loadable(() => import('./components/Footer'));
+const Home = loadable(() => import('./pages/Home'));
+const News = loadable(() => import('./pages/News'));
 
 class App extends Component {
   render() {
