@@ -1,7 +1,27 @@
 {
+  "name": "react-pure-ssr",
+  "version": "0.0.1",
+  "description": "react ssr examples without framework",
+  "main": "dist/server.js",
+  "author": "dylanju",
+  "license": "ISC",
+  "keywords": [
+    "ssr",
+    "server-side-rendering",
+    "react",
+    "typescript",
+    "react-router",
+    "react-router-dom"
+  ],
+  "homepage": "https://github.com/DylanJu/react-pure-ssr",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DylanJu/react-pure-ssr.git"
+  },
   "scripts": {
     "start": "yarn build:dev && node ./dist/server.js",
     "start:wds": "webpack-dev-server --env=dev --profile --colors",
+    "build": "rm -rf dist/ && NODE_ENV=production yarn build:client && NODE_ENV=production yarn build:server",
     "build:dev": "rm -rf dist/ && NODE_ENV=development yarn build:client && NODE_ENV=development yarn build:server",
     "build:server": "webpack --env=server --progress --profile --colors",
     "build:client": "webpack --env=client --progress --profile --colors"
