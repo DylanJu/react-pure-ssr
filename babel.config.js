@@ -17,6 +17,6 @@ module.exports = api => {
       ],
       '@babel/preset-typescript',
     ],
-    plugins: ['@loadable/babel-plugin'],
+    plugins: ['@loadable/babel-plugin', 'babel-plugin-styled-components'],
   };
 };

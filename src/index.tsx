@@ -3,15 +3,19 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 
+import GlobalStyle from './styles/GlobalStyle';
 import App from './App';
 
 loadableReady(() => {
   const rootElement = document.getElementById('root');
   hydrate(
     <BrowserRouter>
-      <App />
+      <>
+        <GlobalStyle />
+        <App />
+      </>
     </BrowserRouter>,
-    rootElement
+    rootElement,
   );
 });
 
