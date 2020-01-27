@@ -10,7 +10,10 @@ const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
-  const webpackConfig = require('../webpack.client.js');
+  const webpackConfig = require('../webpack.client.js').map((config: any) => {
+    config.output.path = config.output.path.replace('dist/dist/', 'dist/');
+    return config;
+  });
 
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -21,7 +24,10 @@ if (process.env.NODE_ENV !== 'production') {
     webpackDevMiddleware(compiler, {
       logLevel: 'silent',
       publicPath: webpackConfig[0].output.publicPath,
-      writeToDisk: true,
+
+      writeToDisk(filePath: string) {
+        return /dist\/node\//.test(filePath) || /loadable-stats/.test(filePath);
+      },
     }),
   );
 
@@ -42,7 +48,7 @@ app.get('*', (req, res) => {
   const jsx = webExtractor.collectChunks(
     <StaticRouter location={req.url} context={context}>
       <App />
-    </StaticRouter>
+    </StaticRouter>,
   );
 
   const html = renderToString(jsx);
