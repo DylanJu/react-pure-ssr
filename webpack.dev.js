@@ -3,9 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  
+
   entry: './src/index.tsx',
-  
+
   devServer: {
     historyApiFallback: true,
     inline: true,
@@ -24,7 +24,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.js', 'jsx', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
   plugins: [
@@ -34,4 +34,4 @@ module.exports = {
       template: 'public/index_dev.html',
     }),
   ],
-}
+};

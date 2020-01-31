@@ -5,15 +5,26 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { ChunkExtractor } from '@loadable/server';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+import reducers from './store/reducers';
 
 const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
+  /* eslint-disable global-require, import/no-extraneous-dependencies */
+  /* eslint-disable no-param-reassign */
   const webpack = require('webpack');
-  const webpackConfig = require('../webpack.client.js');
+  const webpackConfig = require('../webpack.client.js').map((config: any) => {
+    config.output.path = config.output.path.replace('dist/dist/', 'dist/');
+    return config;
+  });
 
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
+  /* eslint-enable global-require, import/no-extraneous-dependencies */
+  /* eslint-enable no-param-reassign */
 
   const compiler = webpack(webpackConfig);
 
@@ -21,7 +32,10 @@ if (process.env.NODE_ENV !== 'production') {
     webpackDevMiddleware(compiler, {
       logLevel: 'silent',
       publicPath: webpackConfig[0].output.publicPath,
-      writeToDisk: true,
+
+      writeToDisk(filePath: string) {
+        return /dist\/node\//.test(filePath) || /loadable-stats/.test(filePath);
+      },
     }),
   );
 
@@ -37,12 +51,15 @@ app.get('*', (req, res) => {
   const { default: App } = nodeExtractor.requireEntrypoint();
   const webExtractor = new ChunkExtractor({ statsFile: webStats });
 
+  const store = createStore(reducers);
   const context = {};
 
   const jsx = webExtractor.collectChunks(
-    <StaticRouter location={req.url} context={context}>
-      <App />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.url} context={context}>
+        <App />
+      </StaticRouter>
+    </Provider>,
   );
 
   const html = renderToString(jsx);
@@ -67,4 +84,6 @@ app.get('*', (req, res) => {
   `);
 });
 
+/* eslint-disable no-console */
 app.listen(3003, () => console.log('Server started http://localhost:3003'));
+/* eslint-enable no-console */
