@@ -7,6 +7,7 @@ import Helmet from 'react-helmet';
 import { ChunkExtractor } from '@loadable/server';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { ServerStyleSheet } from 'styled-components';
 
 import reducers from './store/reducers';
 
@@ -62,7 +63,11 @@ app.get('*', (req, res) => {
     </Provider>,
   );
 
-  const html = renderToString(jsx);
+  const sheet = new ServerStyleSheet();
+  const html = renderToString(sheet.collectStyles(jsx));
+  const styleTags = sheet.getStyleTags();
+  sheet.seal();
+
   const helmet = Helmet.renderStatic();
 
   res.set('content-type', 'text/html');
@@ -75,6 +80,7 @@ app.get('*', (req, res) => {
           ${helmet.title.toString()}
           ${webExtractor.getLinkTags()}
           ${webExtractor.getStyleTags()}
+          ${styleTags}
         </head>
         <body>
           <div id="root">${html}</div>
