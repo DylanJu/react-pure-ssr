@@ -11,7 +11,7 @@ module.exports = {
     'prettier/react',
     'plugin:jest-dom/recommended',
   ],
-  plugins: ['react', '@typescript-eslint', 'jest'],
+  plugins: ['react', '@typescript-eslint', 'jest', 'import'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -29,16 +29,9 @@ module.exports = {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
-      alias: {
-        map: [
-          ['pages', './src/pages'],
-          ['components', './src/components'],
-          ['actions', './src/store/actions']
-          ['reducers', './src/store/reducers']
-          ['util', './src/util'],
-        ],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      }
+      "typescript": {
+        "alwaysTryTypes": true,
+      },
     },
   },
   rules: {
