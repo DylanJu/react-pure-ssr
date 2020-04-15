@@ -23,6 +23,25 @@ module.exports = api => {
       ],
       '@babel/preset-typescript',
     ],
-    plugins: ['@loadable/babel-plugin'],
+    plugins: [
+      '@loadable/babel-plugin',
+      [
+        'module-resolver',
+        {
+          root: ['.'],
+          extensions: ['.ts', '.tsx'],
+          alias: {
+            '@src': './src',
+            '@components': './src/components',
+            '@pages': './src/components/pages',
+            '@store': './src/store',
+            '@reducers': './src/store/reducers',
+            '@actions': './src/store/actions',
+            '@util': './src/util',
+            '@styles': './src/styles',
+          },
+        },
+      ],
+    ],
   };
 };

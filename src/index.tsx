@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { Provider } from 'react-redux';
 
-import configureStore from './store';
-import GlobalStyle from './styles/GlobalStyle';
+import configureStore from '@store';
+import GlobalStyle from '@styles/GlobalStyle';
 import App from './App';
 
 const store = configureStore();
