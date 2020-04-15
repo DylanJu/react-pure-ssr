@@ -3,7 +3,7 @@ import path from 'path';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { renderToString } from 'react-dom/server';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import loadable from '@loadable/component';
 
 const Header = loadable(() => import(/* webpackChunkName: "Header" */ 'components/Header'));
