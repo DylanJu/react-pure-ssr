@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import { increase, decrease } from 'actions/counterAction';
 
 function Home() {
@@ -9,6 +10,7 @@ function Home() {
   return (
     <div>
       My Home
+      <h3 style={{ color: 'black' }}>{moment().format('MMMM Do YYYY, h:mm:ss a')}</h3>
       <div>counter: {number}</div>
       <button type="button" onClick={() => dispatch(increase())}>
         increase
