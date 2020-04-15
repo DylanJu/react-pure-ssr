@@ -1,13 +1,12 @@
+import express from 'express';
 import path from 'path';
 import React from 'react';
-import express from 'express';
-import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import { ChunkExtractor } from '@loadable/server';
-import { createStore } from 'redux';
+import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
-import { ServerStyleSheet } from 'styled-components';
+import { createStore } from 'redux';
+import { renderToString } from 'react-dom/server';
 
 import reducers from './store/reducers';
 
@@ -33,10 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
     webpackDevMiddleware(compiler, {
       logLevel: 'silent',
       publicPath: webpackConfig[0].output.publicPath,
-
-      writeToDisk(filePath: string) {
-        return /dist\/node\//.test(filePath) || /loadable-stats/.test(filePath);
-      },
+      writeToDisk: true,
     }),
   );
 
@@ -63,11 +59,7 @@ app.get('*', (req, res) => {
     </Provider>,
   );
 
-  const sheet = new ServerStyleSheet();
-  const html = renderToString(sheet.collectStyles(jsx));
-  const styleTags = sheet.getStyleTags();
-  sheet.seal();
-
+  const html = renderToString(jsx);
   const helmet = Helmet.renderStatic();
 
   res.set('content-type', 'text/html');
@@ -80,7 +72,6 @@ app.get('*', (req, res) => {
           ${helmet.title.toString()}
           ${webExtractor.getLinkTags()}
           ${webExtractor.getStyleTags()}
-          ${styleTags}
         </head>
         <body>
           <div id="root">${html}</div>
@@ -90,6 +81,4 @@ app.get('*', (req, res) => {
   `);
 });
 
-/* eslint-disable no-console */
 app.listen(3003, () => console.log('Server started http://localhost:3003'));
-/* eslint-enable no-console */
